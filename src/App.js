@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -8,6 +8,7 @@ class App extends Component {
     super();
     this.state = {
       monsters: [],
+      searchField: "",
     };
   }
   componentDidMount() {
@@ -24,11 +25,30 @@ class App extends Component {
         );
       });
   }
+
   render() {
     console.log("render");
+
+    console.log(this.state.searchField);
+
+    var filteredMonsters = this.state.monsters.filter((m) => {
+      return m.name.toLocaleLowerCase().includes(this.state.searchField);
+    });
+
     return (
       <div className="App">
-        {this.state.monsters.map((m) => {
+        <input
+          className="search-box"
+          type="search"
+          placeholder="search monsters"
+          onChange={(e) => {
+            console.log(e.target.value.toLocaleLowerCase());
+
+            this.setState({ searchField: e.target.value.toLocaleLowerCase() });
+          }}
+        />
+
+        {filteredMonsters.map((m) => {
           return (
             <div key={m.id}>
               <h1>{m.name}</h1>
